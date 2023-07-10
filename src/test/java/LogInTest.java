@@ -58,7 +58,6 @@ public class LogInTest {
         String actualResult = driver.getCurrentUrl();
         Assert.assertEquals(actualResult, expectedResult, "https://www.saucedemo.com/inventory.html");
 
-
         if (actualResult.equals(expectedResult)) {
             Assert.assertTrue("User is logged in", home.isLoggedIn());
         } else {
