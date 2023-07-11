@@ -8,7 +8,8 @@ import org.openqa.selenium.WebDriver;
 public class LogInwithCorrectUser {
     WebDriver driver;
     public LogInwithCorrectUser(WebDriver driver){
-        this.driver = driver;}
+        this.driver = driver;
+    }
     By
             correctUserData = By.id("user-name"),
             correctPasswordData = By.name("password"),

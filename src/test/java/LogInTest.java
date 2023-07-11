@@ -1,17 +1,17 @@
-import PageObject.LogInWithFakerData;
-import PageObject.LogInWithLockedUser;
-import PageObject.LogInWithProblemUser;
-import PageObject.LogInwithCorrectUser;
+import DataObject.LogInData;
+import PageObject.*;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.apache.commons.logging.Log;
 import org.junit.Assert;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import static PageObject.LogInWithProblemUser.*;
 
 
 import java.time.Duration;
@@ -83,10 +83,45 @@ public class LogInTest {
                 .clickOnLogInButton();
 
     }
+    @Test (priority = 5)
+    public void LoginWithBlankData()throws InterruptedException{
+        LogInWithBlankData home = new LogInWithBlankData(driver);
+        home
+                .BlankUserName (blankUserName)
+                .BlankPasswordData(blankPasswordData)
+                .clickOnLogInButton();
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement errorElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h3[@data-test='error']")));
+        String errorMessage = errorElement.getText();
+        System.out.println("Error Message: " + errorMessage);
+        Assert.assertTrue("Error element is displayed", errorElement.isDisplayed());
+        Assert.assertEquals(errorMessage, "Error text is valid", "Error text is valid");
+    }
+    @Test(priority = 6)
+    public void LogInWithIncorrectPassword()throws InterruptedException{
+        LogInWithIncorrectPassword home = new LogInWithIncorrectPassword(driver);
+        home
+                .CorrectUserData(correctUserData)
+                .IncorrectPasswordData(incorrectPasswordData)
+                .clickOnLogInButton();
+        LogInData invalidPassData = new LogInData() {};
+        invalidPassData.passwordTry();
+    }
 
     @AfterMethod
     public void tearDown() {
         driver.close();
+    }
+    @Test(priority = 7)
+    public void LogInWithIncorrectUser()throws InterruptedException{
+        LogInWithIncorrectUser home = new LogInWithIncorrectUser(driver);
+        home
+                .InCorrectUserData (incorrectUserData)
+                .CorrectPasswordData (correctPasswordData)
+                .clickOnLogInButton();
+        LogInData invalidUserData = new LogInData() {};
+        invalidUserData.nameTry(10);
     }
 
 }
