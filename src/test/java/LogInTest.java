@@ -1,7 +1,6 @@
 import DataObject.LogInData;
 import PageObject.*;
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.apache.commons.logging.Log;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -12,7 +11,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
+import PageObject.AddToShoppingBags.*;
 
 import java.time.Duration;
 
@@ -31,7 +30,7 @@ public class LogInTest {
     }
 
 
-    @Test(priority = 2)
+    @Test(priority = 8)
     public void LogInData() throws InterruptedException {
         LogInWithFakerData home = new LogInWithFakerData(driver);
         home
@@ -109,10 +108,6 @@ public class LogInTest {
         invalidPassData.passwordTry();
     }
 
-    @AfterMethod
-    public void tearDown() {
-        driver.close();
-    }
     @Test(priority = 7)
     public void LogInWithIncorrectUser()throws InterruptedException{
         LogInWithIncorrectUser home = new LogInWithIncorrectUser(driver);
@@ -122,6 +117,50 @@ public class LogInTest {
                 .clickOnLogInButton();
         LogInData invalidUserData = new LogInData() {};
         invalidUserData.nameTry(10);
+    }
+    @Test(priority = 2)
+    public void userAddItem() throws InterruptedException {
+        AddToShoppingBags home = new AddToShoppingBags(driver);
+        home
+                .CorrectUserData("user-name")
+                .CorrectPasswordData("password")
+                .clickOnLogInButton();
+
+
+        AddToShoppingBags buy = new AddToShoppingBags(driver);
+        buy
+                .clickOnItem();
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.urlToBe("https://www.saucedemo.com/inventory.html"));
+        wait.until(ExpectedConditions.titleIs("Swag Labs"));
+    }
+    @Test(priority = 2)
+    public void oppenShopping() throws InterruptedException {
+        OpenShoppingBags home = new OpenShoppingBags(driver);
+        home
+                .CorrectUserData("user-name")
+                .CorrectPasswordData("password")
+                .clickOnLogInButton();
+
+
+        OpenShoppingBags buy = new OpenShoppingBags(driver);
+        buy
+                .clickOnItem();
+
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.urlToBe("https://www.saucedemo.com/inventory.html"));
+        wait.until(ExpectedConditions.titleIs("Swag Labs"));
+
+        OpenShoppingBags oppenBags = new OpenShoppingBags(driver);
+        oppenBags
+                .clickOnShoppingBags();
+    }
+
+    @AfterMethod
+    public void tearDown() {
+        driver.close();
     }
 
 }
