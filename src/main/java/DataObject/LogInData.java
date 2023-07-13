@@ -4,18 +4,19 @@ import com.github.javafaker.Faker;
 
 public interface LogInData {
     Faker faker = new Faker();
-    int interactionCount =5;
+    int interactionCount = 5;
     String
             incorrectUserData = faker.name().firstName(),
             incorrectPasswordData = faker.internet().password(),
-            blankUserName = "" ,
+            blankUserName = "",
 
-            blankPasswordData = "",
+    blankPasswordData = "",
 
-            problemUserData = "problem_user",
-            lockedUserDara = "problem_user",
+    problemUserData = "problem_user",
+            lockedUserDara = "locked_out_user",
             correctUserData = "standard_user",
             correctPasswordData = "secret_sauce";
+
     default void passwordTry() {
         int count = 0;
 
@@ -30,6 +31,16 @@ public interface LogInData {
         for (int i = 0; i < interactionCount; i++) {
             String name = faker.name().firstName();
             System.out.println("Name options " + (i + 1) + ": " + name);
+        }
+    }
+
+    static void fakerUsernameAndPassword() {
+        for (int count = 0; count < 5; count++) {
+            String username = faker.name().firstName();
+            String password = faker.internet().password();
+            System.out.println("Username: " + username);
+            System.out.println("Password: " + password);
+            System.out.println();
         }
     }
 }

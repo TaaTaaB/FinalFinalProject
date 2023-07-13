@@ -6,7 +6,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 
-
 public class AddToShoppingBags {
     WebDriver driver;
 
@@ -24,7 +23,6 @@ public class AddToShoppingBags {
     public AddToShoppingBags CorrectUserData(String username) {
         driver.findElement(this.correctUserData).sendKeys(LogInData.correctUserData);
         return this;
-
     }
 
     @Step("password input:{0}")
@@ -36,13 +34,11 @@ public class AddToShoppingBags {
     @Step("Click on Login Button")
     public void clickOnLogInButton() throws InterruptedException {
         driver.findElement(LogInButton).click();
-
     }
 
     @Step("Click on Inventory Item")
     public void clickOnItem() throws InterruptedException {
         driver.findElement(buyItem).click();
         Thread.sleep(5000);
-
     }
 }

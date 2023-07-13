@@ -11,7 +11,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import PageObject.AddToShoppingBags.*;
 
 import java.time.Duration;
 
@@ -30,21 +29,24 @@ public class LogInTest {
     }
 
 
-    @Test(priority = 8)
-    public void LogInData() throws InterruptedException {
+    @Test(priority = 9)
+    public void LogInWhithFakerData() throws InterruptedException {
         LogInWithFakerData home = new LogInWithFakerData(driver);
         home
                 .IncorrectUserlData(incorrectUserData)
                 .IncorrectPasswordData(incorrectPasswordData)
                 .clickOnLogInButton();
+        LogInData.fakerUsernameAndPassword();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.urlToBe("https://www.saucedemo.com/inventory.html"));
+        wait.until(ExpectedConditions.titleIs("Swag Labs"));
         String actualTitle = driver.getTitle();
         String exspectedTitle = "Swag Labs";
         Assert.assertEquals(actualTitle, exspectedTitle);
-
-
     }
+
     @Test(priority = 1)
-    public void LogInWithCorrectUser()throws InterruptedException {
+    public void LogInWithCorrectData() throws InterruptedException {
         LogInwithCorrectUser home = new LogInwithCorrectUser(driver);
         home
                 .CorrectUserData(correctUserData)
@@ -65,31 +67,32 @@ public class LogInTest {
         }
         System.out.println("Link is valid: " + actualResult);
     }
-    @Test(priority = 3)
-    public void LoginWithProblemUserName()throws InterruptedException{
-        LogInWithProblemUser home =new LogInWithProblemUser(driver);
+
+    @Test(priority = 10)
+    public void LoginWithProblemUserName() throws InterruptedException {
+        LogInWithProblemUser home = new LogInWithProblemUser(driver);
         home
                 .ProblemUserData(problemUserData)
-                .CorrectPasswordData(correctPasswordData)
+                .CorrectPasswordData(incorrectPasswordData)
                 .clickOnLogInButton();
     }
-    @Test(priority = 4)
-    public void LoginWithLockedUserName()throws InterruptedException{
-        LogInWithLockedUser home =new LogInWithLockedUser(driver);
+
+    @Test(priority = 5)
+    public void LoginWithLockedUserName() throws InterruptedException {
+        LogInWithLockedUser home = new LogInWithLockedUser(driver);
         home
                 .LockedUserData(lockedUserDara)
                 .CorrectPasswordData(correctPasswordData)
                 .clickOnLogInButton();
-
     }
-    @Test (priority = 5)
-    public void LoginWithBlankData()throws InterruptedException{
+
+    @Test(priority = 6)
+    public void LoginWithBlankData() throws InterruptedException {
         LogInWithBlankData home = new LogInWithBlankData(driver);
         home
-                .BlankUserName (blankUserName)
+                .BlankUserName(blankUserName)
                 .BlankPasswordData(blankPasswordData)
                 .clickOnLogInButton();
-
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         WebElement errorElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h3[@data-test='error']")));
         String errorMessage = errorElement.getText();
@@ -97,27 +100,31 @@ public class LogInTest {
         Assert.assertTrue("Error element is displayed", errorElement.isDisplayed());
         Assert.assertEquals(errorMessage, "Error text is valid", "Error text is valid");
     }
-    @Test(priority = 6)
-    public void LogInWithIncorrectPassword()throws InterruptedException{
+
+    @Test(priority = 7)
+    public void LogInWithIncorrectPassword() throws InterruptedException {
         LogInWithIncorrectPassword home = new LogInWithIncorrectPassword(driver);
         home
                 .CorrectUserData(correctUserData)
                 .IncorrectPasswordData(incorrectPasswordData)
                 .clickOnLogInButton();
-        LogInData invalidPassData = new LogInData() {};
+        LogInData invalidPassData = new LogInData() {
+        };
         invalidPassData.passwordTry();
     }
 
-    @Test(priority = 7)
-    public void LogInWithIncorrectUser()throws InterruptedException{
+    @Test(priority = 8)
+    public void LogInWithIncorrectUser() throws InterruptedException {
         LogInWithIncorrectUser home = new LogInWithIncorrectUser(driver);
         home
-                .InCorrectUserData (incorrectUserData)
-                .CorrectPasswordData (correctPasswordData)
+                .InCorrectUserData(incorrectUserData)
+                .CorrectPasswordData(correctPasswordData)
                 .clickOnLogInButton();
-        LogInData invalidUserData = new LogInData() {};
+        LogInData invalidUserData = new LogInData() {
+        };
         invalidUserData.nameTry(10);
     }
+
     @Test(priority = 2)
     public void userAddItem() throws InterruptedException {
         AddToShoppingBags home = new AddToShoppingBags(driver);
@@ -126,36 +133,50 @@ public class LogInTest {
                 .CorrectPasswordData("password")
                 .clickOnLogInButton();
 
-
         AddToShoppingBags buy = new AddToShoppingBags(driver);
         buy
                 .clickOnItem();
-
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.urlToBe("https://www.saucedemo.com/inventory.html"));
-        wait.until(ExpectedConditions.titleIs("Swag Labs"));
     }
-    @Test(priority = 2)
+
+    @Test(priority = 3)
     public void oppenShopping() throws InterruptedException {
         OpenShoppingBags home = new OpenShoppingBags(driver);
         home
                 .CorrectUserData("user-name")
                 .CorrectPasswordData("password")
                 .clickOnLogInButton();
-
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement inventoryPageTitle = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("title")));
+        Assert.assertEquals(inventoryPageTitle.getText(), "Inventory page title is as expected", "Inventory page title is as expected");
 
         OpenShoppingBags buy = new OpenShoppingBags(driver);
         buy
                 .clickOnItem();
 
-
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.urlToBe("https://www.saucedemo.com/inventory.html"));
-        wait.until(ExpectedConditions.titleIs("Swag Labs"));
-
         OpenShoppingBags oppenBags = new OpenShoppingBags(driver);
         oppenBags
                 .clickOnShoppingBags();
+    }
+
+    @Test(priority = 4)
+    public void RemoveFromShoppingBags() throws InterruptedException {
+        RemoveFromShoppingBags home = new RemoveFromShoppingBags(driver);
+        home
+                .CorrectUserData("user-name")
+                .CorrectPasswordData("password")
+                .clickOnLogInButton();
+
+        RemoveFromShoppingBags clickbuy = new RemoveFromShoppingBags(driver);
+        clickbuy
+                .clickOnItem();
+
+        RemoveFromShoppingBags oppenBags = new RemoveFromShoppingBags(driver);
+        oppenBags
+                .clickOnShoppingBags();
+
+        RemoveFromShoppingBags removeItem = new RemoveFromShoppingBags(driver);
+        removeItem
+                .RemoveFromShoppingBags();
     }
 
     @AfterMethod

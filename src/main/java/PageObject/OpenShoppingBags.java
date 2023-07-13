@@ -17,8 +17,8 @@ public class OpenShoppingBags {
             correctPasswordData = By.name("password"),
             LogInButton = By.id("login-button"),
             buyItem = By.xpath("//div[@class='inventory_item'][1]//button"),
-            oppenBags = By.className("shopping_cart_badge");
-
+            oppenBags = By.className("shopping_cart_badge"),
+            RemoveButton = By.id("remove-sauce-labs-backpack");
 
 
     @Step("username input:{0}")
@@ -46,12 +46,11 @@ public class OpenShoppingBags {
 
 
     }
+
     @Step("Click on Shopping Cart Badge")
     public void clickOnShoppingBags() throws InterruptedException {
         driver.findElement(oppenBags).click();
         Thread.sleep(5000);
-
-
     }
 
 

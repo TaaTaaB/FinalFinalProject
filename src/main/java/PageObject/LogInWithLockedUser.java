@@ -7,8 +7,10 @@ import org.openqa.selenium.WebDriver;
 
 public class LogInWithLockedUser {
     WebDriver driver;
-    public LogInWithLockedUser(WebDriver driver){
-        this.driver = driver;}
+
+    public LogInWithLockedUser(WebDriver driver) {
+        this.driver = driver;
+    }
 
     By
             lockedUserDara = By.name("user-name"),
@@ -16,7 +18,7 @@ public class LogInWithLockedUser {
             loginButton = By.name("login-button");
 
     @Step("username input:{0}")
-    public LogInWithLockedUser LockedUserData(String username){
+    public LogInWithLockedUser LockedUserData(String username) {
         driver.findElement(lockedUserDara).sendKeys(LogInData.lockedUserDara);
         return this;
     }

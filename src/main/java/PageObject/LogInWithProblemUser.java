@@ -7,8 +7,10 @@ import org.openqa.selenium.WebDriver;
 
 public class LogInWithProblemUser {
     WebDriver driver;
-    public LogInWithProblemUser(WebDriver driver){
-        this.driver = driver;}
+
+    public LogInWithProblemUser(WebDriver driver) {
+        this.driver = driver;
+    }
 
     By
             problemUserData = By.name("user-name"),
@@ -16,7 +18,7 @@ public class LogInWithProblemUser {
             loginButton = By.name("login-button");
 
     @Step("username input:{0}")
-    public LogInWithProblemUser ProblemUserData(String username){
+    public LogInWithProblemUser ProblemUserData(String username) {
         driver.findElement(problemUserData).sendKeys(LogInData.problemUserData);
         return this;
     }
